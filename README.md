@@ -2,10 +2,10 @@
 
 ## Table of Contents
 
-- [description of the project](#description_of_project)
-- [description of the command interpreter](#description_of_the_command_interprter)
-	- [how to start it](#how_to_start_it)
-	- [how to use it](#how_to_use_it)
+- [description of the project](#description-of-project)
+- [description of the command interpreter](#description-of-the-command-interprter)
+	- [how to start it](#how-to-start-it)
+	- [how to use it](#how-to-use-it)
 	- [examples](#examples)
 
 
