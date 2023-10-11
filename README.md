@@ -15,11 +15,26 @@
 
 #### how to start it
 
+* Enter project file.
+* cd into models directory.
+* Next run ./console.py.
+
 #### how to use it
+
+* Create new instance model, save (to JSON file) & print id.
+* Show __str__ representation of instances.
+* Destroy instance.
+* Print all __str__ representation of instances.
+* Update all instances.
 
 #### examples
 
+* $
+* $
+* $
+* $
+* $
 
 
-## Yasir Musa
-## Lawal Tajudeen
+##### Yasir Musa
+##### Lawal Tajudeen
