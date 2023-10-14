@@ -1,25 +1,25 @@
-# AirBnB clone
+# AirBnB clone - The console
 
 ## Table of Contents
 
-- [description of the project](#description-of-project)
-- [description of the command interpreter](#description-of-the-command-interprter)
-	- [how to start it](#how-to-start-it)
-	- [how to use it](#how-to-use-it)
-	- [examples](#examples)
+- [Description of the Project](#Description-of-Project)
+- [Description of the Command Interpreter](#Description-of-the-Command-Interprter)
+	- [How to start it](#How-to-start-it)
+	- [How to use it](#How-to-use-it)
+	- [Examples](#Examples)
 
 
-### description of project
+### Description of Project
 
-### description of the command interprter
+### Description of the Command Interprter
 
-#### how to start it
+#### How to start it
 
 * Enter project file.
 * `cd` into `models` directory.
 * Next run `./console.py.`
 
-#### how to use it
+#### How to use it
 
 * Create new instance model, save (to `JSON` file) & print `id`.
 * Show `__str__` representation of instances.
@@ -27,7 +27,7 @@
 * Print all `__str__` representation of instances.
 * Update all instances.
 
-#### examples
+#### Examples
 
 * $
 * $
