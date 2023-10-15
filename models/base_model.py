@@ -14,10 +14,6 @@ class BaseModel():
     '''
 
     id = ''
-    '''
-    created_at = None
-    updated_at = None
-    '''
     created_at = datetime.now()
     updated_at = datetime.now()
 
@@ -63,18 +59,6 @@ class BaseModel():
         '''
             Return:
                 dictionary containing keys/values of __dict__ of instance
-        '''
-        '''
-        mydict = {}
-        for key, value in self.__dict__.items():
-            if isinstance(value, datetime):
-                mydict[key] = value.isoformat()
-            else:
-                mydict[key] = value
-        return {
-                **mydict,
-                '__class__': type(self).__name__
-                }
         '''
         my_dict = dict(self.__dict__)
         my_dict['__class__'] = self.__class__.__name__
