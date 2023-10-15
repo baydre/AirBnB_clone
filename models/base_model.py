@@ -4,7 +4,7 @@
     class Base Model
 '''
 from datetime import datetime
-# import models
+import models
 import uuid
 
 
@@ -14,8 +14,12 @@ class BaseModel():
     '''
 
     id = ''
+    '''
     created_at = None
     updated_at = None
+    '''
+    created_at = datetime.now()
+    updated_at = datetime.now()
 
     def __init__(self, *args, **kwargs):
         '''
