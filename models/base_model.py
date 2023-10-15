@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 # Public instance attributes
 '''
-class Base Model
+    class Base Model
 '''
-import uuid
 from datetime import datetime
-import models
+# import models
+import uuid
 
 
 class BaseModel():
     '''
-    BaseModel definition
+        BaseModel definition
     '''
 
     id = ''
@@ -19,9 +19,9 @@ class BaseModel():
 
     def __init__(self, *args, **kwargs):
         '''
-        initialise values
+            initialise values
         '''
-# Re-created an instance with dictionary representation
+        # Re-created an instance with dictionary representation
         format = '%Y-%m-%dT%H:%M:%S.%f'
         if kwargs:
             for key, value in kwargs.items():
@@ -37,17 +37,30 @@ class BaseModel():
             models.storage.new(self)
 
     def __str__(self):
+        '''
+            Return:
+                class name
+                class id
+                class dictionary
+        '''
         return ("[{}] ({}) {}".format(type(self).__name__,
                 self.id, self.__dict__))
 
-# Public instance methods
+    # Public instance methods
     def save(self):
-        ''' Comment '''
+        '''
+            updates the public instances attrib. update_at
+            with cuyrrent datetime
+        '''
         self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
-        ''' Comment '''
+        '''
+            Return:
+                dictionary containing keys/values of __dict__ of instance
+        '''
+        '''
         mydict = {}
         for key, value in self.__dict__.items():
             if isinstance(value, datetime):
@@ -58,3 +71,9 @@ class BaseModel():
                 **mydict,
                 '__class__': type(self).__name__
                 }
+        '''
+        my_dict = dict(self.__dict__)
+        my_dict['__class__'] = self.__class__.__name__
+        my_dict['created_at'] = self.created_at.isoformat()
+        my_dict['updated_at'] = self.updated_at.isoformat()
+        return my_dict
