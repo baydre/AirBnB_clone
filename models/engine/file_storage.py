@@ -36,7 +36,7 @@ class FileStorage:
         for key, obj in FileStorage.__objects.items():
             serialised_objects[key] = obj.to_dict()
         '''
-        with open(FileStorage.__file_path, 'w') as file:
+        with open(FileStorage.__file_path, 'w+') as file:
             for key, obj in self.__objects.items():
                 '''
                 Assign a key-value pair to the serialized_objects dictionary.
