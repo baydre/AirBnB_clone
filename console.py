@@ -141,7 +141,7 @@ class HBNBCommand(cmd.Cmd):
         '''
             updates instance
         '''
-        args = split(line)
+        args = line.split()
         objects = storage.all()
         class_name = args[0]
         key = class_name + '.' + args[1]
