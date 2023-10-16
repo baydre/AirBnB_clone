@@ -2,8 +2,9 @@
 '''
     Recreate BaseModel from another one using dict. repr.
 '''
-
+import models
 from models.base_model import BaseModel
+from models.user import User
 import json
 from os.path import isfile
 
@@ -69,9 +70,14 @@ class FileStorage:
                             to retrieve obj from json file
                         '''
                         class_name = obj_dict['__class__']
-                        del obj_dict['__class__']
-                        obj_instance = eval(class_name)(**obj_dict)
-                        self.__objects[key] = obj_instance
+                        # del obj_dict['__class__']
+                        # obj_instance = eval(class_name)(**obj_dict)
+                        '''
+                            Updated to correctly serialize and
+                            deserialize User
+                        '''
+                        obj_dict = eval(class_name)(**obj_dict)
+                        self.__objects[key] = obj_dict
         except FileNotFoundError:
             '''
                 if file does not exist
