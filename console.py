@@ -2,7 +2,9 @@
 ''' console 0.0.1 '''
 import cmd
 from models.base_model import BaseModel
-from models import classes, storage
+from models import classes
+from models import storage
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
