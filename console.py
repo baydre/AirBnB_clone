@@ -84,11 +84,11 @@ class HBNBCommand(cmd.Cmd):
                 argument after the command
         '''
         args = line.split()
-        class_name = args[0]
+        cl_nm = '{}.{}.format(args[0], args[1]'
         if len(args) == 0:
             ''' If class is missing '''
             print('** class name missing **')
-        elif class_name not in classes:
+        elif cl_nm not in classes:
             '''
                 if class does not exist
             '''
@@ -99,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
             '''
             print('** instance id missing **')
         else:
-            key = class_name + '.' + args[1]
+            key = cl_nm + '.' + args[1]
             objects = storage.all()
             if key in objects:
                 '''
@@ -121,12 +121,21 @@ class HBNBCommand(cmd.Cmd):
         args = line.split()
         objects = storage.all()
         if len(args) > 0:
-            if args[0] not in storage.all():
+            if args[0] not in classes:
                 print("** class doesn't exist **")
         else:
+            '''
             class_name = args[0]
             print([str(obj) for key, obj in objects.items()
                   if key.startswith(class_name)])
+            '''
+            objects = []
+            for obj in storage.all().values():
+                if len(args) > 0 and args[0] == obj.__class__.__name__:
+                    objects.append(obj.__str__())
+                elif len(args) == 0:
+                    objects.append(obj.__str__())
+            print(objects)
 
     def do_update(self, line):
         '''
