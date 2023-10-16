@@ -27,7 +27,7 @@ class Test_all(unittest.TestCase):
         '''
         try:
             remove("file.json")
-        except:
+        except FileNotFoundError:
             pass
         FileStorage._FileStorage__objects = {}
 
@@ -38,7 +38,7 @@ class Test_all(unittest.TestCase):
         '''
         try:
             remove("file.json")
-        except:
+        except FileNotFoundError:
             pass
 
     def test_all_without_arg(self):
