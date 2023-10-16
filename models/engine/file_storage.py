@@ -23,8 +23,8 @@ class FileStorage:
         '''
             sets new objects to dictionary
         '''
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
         if key:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
             self.__objects[key] = obj
 
     def save(self):
