@@ -17,7 +17,7 @@ class FileStorage:
         '''
             Returns/displays dict objects
         '''
-        return FileStorage.__objects
+        return self.__objects
 
     def new(self, obj):
         '''
@@ -36,7 +36,7 @@ class FileStorage:
         for key, obj in FileStorage.__objects.items():
             serialised_objects[key] = obj.to_dict()
         '''
-        with open(FileStorage.__file_path, 'w+') as file:
+        with open(self.__file_path, 'w+') as file:
             for key, obj in self.__objects.items():
                 '''
                 Assign a key-value pair to the serialized_objects dictionary.
@@ -71,7 +71,7 @@ class FileStorage:
                         class_name = obj_dict['__class__']
                         del obj_dict['__class__']
                         obj_instance = eval(class_name)(**obj_dict)
-                        FileStorage.__objects[key] = obj_instance
+                        self.__objects[key] = obj_instance
         except FileNotFoundError:
             '''
                 if file does not exist
