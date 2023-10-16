@@ -11,12 +11,12 @@ class User(BaseModel):
     '''
 
     # def __init__(self, *args, **kwargs):
-        '''
-            defined the public class attrib;
-                to be  called when a new instance of
-                the class User is created.
-        '''
-        # super().__init__(*args, **kwargs)
+    '''
+        defined the public class attrib;
+             to be  called when a new instance of
+            the class User is created.
+    '''
+    # super().__init__(*args, **kwargs)
 
     self.email = ''
     self.password = ''
