@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             class_name = args[0]
             print([str(obj) for key, obj in objects.items()
-                if key.startswith(class_name)])
+                  if key.startswith(class_name)])
 
     def do_update(self, line):
         '''
