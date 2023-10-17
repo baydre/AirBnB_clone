@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-''' console 0.0.1 '''
+
 import cmd
 from models.base_model import BaseModel
 # from models import classes
@@ -13,6 +13,7 @@ from models.review import Review
 from shlex import split
 import re
 
+
 def parse(arg):
     '''
         Ussage:
@@ -20,21 +21,21 @@ def parse(arg):
             using a regular expression
     '''
     curly_braces = re.search(r"\{(.*?)\}", arg)
-    
+
     '''
         Usage:
             Search for text enclosed in square brackets
             using a regular expression
     '''
     brackets = re.search(r"\[(.*?)\]", arg)
-    
+
     '''
         Usage:
             Check if there sre no curly braces found in
             the input string
     '''
     if curly_braces is None:
-        
+
         '''
             Usage:
                 Check if there are no square brackets
@@ -52,19 +53,17 @@ def parse(arg):
                 split the input string up to the end of the brackets
             '''
             lexer = split(arg[brackets.span()[0]])
-            
+
             '''
                 Remove trailing commas and create a list of
                 split items
             '''
             my_list = [i.strip(",") for i in lexer]
-            
             '''
                 Append the contents of
                 the square brackets to the list
             '''
             my_list.append(brackets.group())
-            
             '''
                 Return the final list
             '''
@@ -76,18 +75,15 @@ def parse(arg):
             Split the input string up to the end of the curly braces
         '''
         lexer = split(arg[:curly_braces.span()[0]])
-        
         '''
             Remove trailing commas and
             create a list of split items
         '''
         my_list = [i.strip(",") for i in lexer]
-        
         '''
             Append the contents of the curly braces to the list
         '''
         my_list.append(curly_braces.group())
-        
         '''
             Return the final list
         '''
