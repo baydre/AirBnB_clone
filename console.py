@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from shlex import split
 
 
 class HBNBCommand(cmd.Cmd):
@@ -216,8 +217,9 @@ class HBNBCommand(cmd.Cmd):
         # end if
         elif type(eval(args[2])) == dict:
             objs = objects[key]
+            data_type = {str, float, int}
             for i, val in eval(args[2]).items():
-                if i in my_dict.key() and type(my_dict[i]) in {str, float, int}:
+                if i in my_dict.key() and type(my_dict[i]) in data_type:
                     value_type = type(my_dict[i])
                     objs.__dict__[i] = value_type(val)
                 # end if
@@ -227,7 +229,6 @@ class HBNBCommand(cmd.Cmd):
             # end for
         # end elif
         storage.save()
-
 
 
 if __name__ == '__main__':
