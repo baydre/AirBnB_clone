@@ -38,11 +38,7 @@ class FileStorage:
             serialization of __objects to JSON file
         '''
         serialised_objects = {}
-        '''
-        for key, obj in FileStorage.__objects.items():
-            serialised_objects[key] = obj.to_dict()
-        '''
-        with open(self.__file_path, 'w+') as file:
+        with open(self.__file_path, 'w+' encoding='UTF-8') as file:
             for key, obj in self.__objects.items():
                 '''
                 Assign a key-value pair to the serialized_objects dictionary.
@@ -67,7 +63,7 @@ class FileStorage:
         try:
             if isfile(self.__file_path):
                 ''' Open file and commit deserialization '''
-                with open(self.__file_path, 'r+') as file:
+                with open(self.__file_path, 'r+' encoding='UTF-8') as file:
                     data = json.load(file)
                     for key, obj_dict in data.items():
                         '''
@@ -75,8 +71,6 @@ class FileStorage:
                             to retrieve obj from json file
                         '''
                         class_name = obj_dict['__class__']
-                        # del obj_dict['__class__']
-                        # obj_instance = eval(class_name)(**obj_dict)
                         '''
                             Updated to correctly serialize and
                             deserialize User
