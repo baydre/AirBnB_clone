@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-
+'''
+    The HBNB console
+'''
 import cmd
 from models.base_model import BaseModel
 # from models import classes
@@ -14,28 +16,25 @@ from shlex import split
 import re
 
 
-def parse(arg):
+def parse(line):
     '''
         Ussage:
             Search for text enclosed in curly braces
             using a regular expression
     '''
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-
+    curly_braces = re.search(r'\{(.*?)\}', line)
     '''
         Usage:
             Search for text enclosed in square brackets
             using a regular expression
     '''
-    brackets = re.search(r"\[(.*?)\]", arg)
-
+    brackets = re.search(r'\[(.*?)\]', line)
     '''
         Usage:
             Check if there sre no curly braces found in
             the input string
     '''
     if curly_braces is None:
-
         '''
             Usage:
                 Check if there are no square brackets
@@ -46,19 +45,19 @@ def parse(arg):
                 If neither curly braces nor square brackets
                 are present, split the input string by commas
             '''
-            return [i.strip(",") for i in split(arg)]
+            return [arg.strip(',') for arg in split(line)]
+        # end if
         else:
             '''
                 If square brackets are found,
                 split the input string up to the end of the brackets
             '''
-            lexer = split(arg[brackets.span()[0]])
-
+            lexer = split(line[:brackets.span()[0]])
             '''
                 Remove trailing commas and create a list of
                 split items
             '''
-            my_list = [i.strip(",") for i in lexer]
+            my_list = [arg.strip(',') for arg in lexer]
             '''
                 Append the contents of
                 the square brackets to the list
@@ -69,17 +68,18 @@ def parse(arg):
             '''
             return my_list
         # end else
+    # end if
     else:
         '''
             If there are curly brces in the input string
             Split the input string up to the end of the curly braces
         '''
-        lexer = split(arg[:curly_braces.span()[0]])
+        lexer = split(line[:curly_braces.span()[0]])
         '''
             Remove trailing commas and
             create a list of split items
         '''
-        my_list = [i.strip(",") for i in lexer]
+        my_list = [arg.strip(',') for arg in lexer]
         '''
             Append the contents of the curly braces to the list
         '''
@@ -108,21 +108,27 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         '''
-            Empty line + ENTER
+            Usage:
+                `Empty line + ENTER` do nothing
         '''
         pass
+    # end method
 
     def do_quit(self, line):
         '''
-            Quit command to exit the program
+            Usage:
+                Quit command to exit the program
         '''
         return True
+    # end method
 
     def do_EOF(self, line):
         '''
             EOF command to exit program
         '''
+        print('')
         return True
+    # end method
 
     def do_create(self, line):
         '''
@@ -133,43 +139,49 @@ class HBNBCommand(cmd.Cmd):
         if not args or len(args) == 0:
             '''If class is missing '''
             print('** class name missing **')
-            return
         # end if
         elif args[0] not in self.__classes:
             ''' if it doe not exist '''
             print("** class doesn't exist **")
-            return
         # end elif
         else:
             print(eval(args[0])().id)
             storage.save()
-            return
         # end else
+    # end method
 
     def do_show(self, line):
         '''shows an instance'''
         args = parse(line)
+        objects = storage.all()
         if not args or len(args) == 0 or args[0] == "":
             '''
                 if class is missing
             '''
             print('** class name missing **')
+        # end if
         elif args[0] not in self.__classes:
             '''
                 if class does not exist
             '''
             print("** class doesn't exist **")
+        # end elif
         elif len(args) < 2 or args[1] == '':
             '''
                 command without an argument
             '''
             print('** instance id missing **')
+        # end elif
         else:
-            key = args[0] + '.' + args[1]
-            if key in storage.all():
-                print(storage.all()[key])
+            key = '{}.{}'.format(args[0], args[1])
+            if key in objects:
+                print(objects[key])
+            # end if
             else:
                 print('** no instance found **')
+            # end else
+        # end else
+    # end method
 
     def do_destroy(self, line):
         '''
@@ -188,7 +200,7 @@ class HBNBCommand(cmd.Cmd):
             return False
         # end if
         # elif cl_nm not in classes:
-        elif args[0] not in self.__classes:
+        elif args[0] not in HBNBCommand.__classes:
             '''
                 if class does not exist
             '''
@@ -211,12 +223,15 @@ class HBNBCommand(cmd.Cmd):
                 '''
                 del objects[key]
                 storage.save()
+            # end if
             else:
                 '''
                     If the instance of the class name
                     doesn’t exist for the id
                 '''
                 print('** no instance found **')
+            # end else
+        # end method
 
     def do_all(self, line):
         '''
@@ -225,9 +240,9 @@ class HBNBCommand(cmd.Cmd):
         '''
         args = parse(line)
         objects = storage.all()
-        if len(args) > 0:
-            if args[0] not in self.__classes:
-                print("** class doesn't exist **")
+        if len(args) > 0 and args[0] not in self.__classes:
+            print("** class doesn't exist **")
+            return False
         else:
             '''
             class_name = args[0]
@@ -238,9 +253,14 @@ class HBNBCommand(cmd.Cmd):
             for obj in storage.all().values():
                 if len(args) > 0 and args[0] == obj.__class__.__name__:
                     objects.append(obj.__str__())
+                # end if
                 elif len(args) == 0:
                     objects.append(obj.__str__())
+                # end elif
+            # end for
             print(objects)
+        # end else
+    # end method
 
     def do_update(self, line):
         '''
@@ -265,7 +285,7 @@ class HBNBCommand(cmd.Cmd):
         # key = '{}.{}'.format(class_name, args[1])
         key = args[0] + '.' + args[1]
 
-        if class_name not in self.__classes:
+        if class_name not in HBNBCommand.__classes:
             '''
                 the class does not exist
             '''
@@ -329,6 +349,60 @@ class HBNBCommand(cmd.Cmd):
             # end for
         # end elif
         storage.save()
+
+    def default(self, line):
+        '''
+            Usage:
+                Behaviour when module input is invalid
+        '''
+        '''
+            Create a dictionary that maps commands
+            to their corresponding methods.
+        '''
+        my_default_dict = {
+                'all': self.do_all,
+                'show': self.do_show,
+                'destroy': self.do_destroy,
+                'update': self.do_update
+                }
+        '''
+            Check to see if the input argument contains a period
+            (this indicates a method call).
+        '''
+        match = re.search(r'\.', line)
+
+        if match is not None:
+            '''
+                Usage:
+                    Split the argument into two parts
+                    before and after the period
+            '''
+            args = [line[:match.span()[0]], line[match.span()[1]:]]
+
+            '''
+                search for text enclosed in parentheseees
+            '''
+            match = re.search(r'\((.*?)\)', args[1])
+
+            if match is not None:
+                '''
+                    Split the method call into the command and parameters
+                '''
+                my_command = [args[1][:match.span()[0]], match.group()[1:-1]]
+
+                if my_command[0] in my_default_dict.keys():
+                    '''
+                        if the command is valid,
+                        construct the full command and call the method
+                    '''
+                    key = '{}.{}'.format(args[0],my_command[1])
+                    key_const = my_default_dict[my_command[0]](key)
+        '''
+            If the input does not match any of the syntax(knownn),
+                print the error message
+        '''
+        # print('*** Unknown syntax: {}'.format(line))
+        return False
 
 
 if __name__ == '__main__':
