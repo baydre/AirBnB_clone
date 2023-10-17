@@ -81,9 +81,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         '''
-            deletes an instance
-            the line is expecting a single
-                argument after the command
+        Usage:  `destroy <class><id>`
+                `<class>.destroy(<id>)`
+
+                Deletes the class instance of a given id.
         '''
         args = line.split()
         cl_nm = '{}.{}.format(args[0], args[1]'
@@ -118,6 +119,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         '''
+        Usage:  all | all <class>
             prints all instance
         '''
         args = line.split()
