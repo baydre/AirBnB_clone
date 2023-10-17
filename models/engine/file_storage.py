@@ -38,7 +38,7 @@ class FileStorage:
             serialization of __objects to JSON file
         '''
         serialised_objects = {}
-        with open(self.__file_path, 'w+' encoding='UTF-8') as file:
+        with open(self.__file_path, 'w') as file:
             for key, obj in self.__objects.items():
                 '''
                 Assign a key-value pair to the serialized_objects dictionary.
@@ -63,7 +63,7 @@ class FileStorage:
         try:
             if isfile(self.__file_path):
                 ''' Open file and commit deserialization '''
-                with open(self.__file_path, 'r+' encoding='UTF-8') as file:
+                with open(self.__file_path, 'r') as file:
                     data = json.load(file)
                     for key, obj_dict in data.items():
                         '''
