@@ -152,35 +152,82 @@ class HBNBCommand(cmd.Cmd):
         '''
         args = line.split()
         objects = storage.all()
-        class_name = args[0]
-        key = class_name + '.' + args[1]
+
         if len(args) == 0:
             '''
-                if class isn missing
+                checking the lenght of args
             '''
             print('** class name missing **')
+            return False
+        # end if
+
+        class_name = args[0]
+        key = '{}.{}'.format(class_name, args[1])
+
         if class_name not in classes:
             '''
                 the class does not exist
             '''
             print("** class doesn't exist **")
+            return False
+        # end if
+
         if len(args) == 1:
             '''
                 command without argument
             '''
             print("** instance id missing **")
+            return False
+        # end if
+
         if key not in objects.keys():
             '''
                 If the instance of the class name
                 doesn’t exist for the id
             '''
             print('** no instance found **')
+            return False
+        # end if
+
         if len(args) == 2:
             print('** attribute name missing **')
+            return False
+        # end if
+
         if len(args) == 3:
             args_type = type(eval(args[2]))
             if args_type != dict:
                 raise NameError(print('** value missing **'))
+            # end if
+            return False
+        # end if
+
+        if len(args) == 4:
+            objs = objects[key]
+            my_dict = objs.__class__.__dict__
+
+            if args[2] in my_dict.keys():
+                value_type = type(my_dict[args[2]])
+                objs.__dict__[args[2]] = value_type(args[3])
+            # end if
+            else:
+                objs.__dict__[args[2]] = args[3]
+            # end else
+        # end if
+        elif type(eval(args[2])) == dict:
+            objs = objects[key]
+            for i, val in eval(args[2]).items():
+                if i in my_dict.key() and type(my_dict[i]) in {str, float, int}:
+                    value_type = type(my_dict[i])
+                    objs.__dict__[i] = value_type(val)
+                # end if
+                else:
+                    objs.__dict__[k] = v
+                # end else
+            # end for
+        # end elif
+        storage.save()
+
 
 
 if __name__ == '__main__':
