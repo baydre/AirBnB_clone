@@ -2,7 +2,7 @@
 ''' console 0.0.1 '''
 import cmd
 from models.base_model import BaseModel
-from models import classes
+# from models import classes
 from models import storage
 from models.user import User
 from models.place import Place
@@ -11,6 +11,88 @@ from models.city import City
 from models.amenity import Amenity
 from models.review import Review
 from shlex import split
+import re
+
+def parse(arg):
+    '''
+        Ussage:
+            Search for text enclosed in curly braces
+            using a regular expression
+    '''
+    curly_braces = re.search(r"\{(.*?)\}", arg)
+    
+    '''
+        Usage:
+            Search for text enclosed in square brackets
+            using a regular expression
+    '''
+    brackets = re.search(r"\[(.*?)\]", arg)
+    
+    '''
+        Usage:
+            Check if there sre no curly braces found in
+            the input string
+    '''
+    if curly_braces is None:
+        
+        '''
+            Usage:
+                Check if there are no square brackets
+                found in the input string
+        '''
+        if brackets is None:
+            '''
+                If neither curly braces nor square brackets
+                are present, split the input string by commas
+            '''
+            return [i.strip(",") for i in split(arg)]
+        else:
+            '''
+                If square brackets are found,
+                split the input string up to the end of the brackets
+            '''
+            lexer = split(arg[brackets.span()[0]])
+            
+            '''
+                Remove trailing commas and create a list of
+                split items
+            '''
+            my_list = [i.strip(",") for i in lexer]
+            
+            '''
+                Append the contents of
+                the square brackets to the list
+            '''
+            my_list.append(brackets.group())
+            
+            '''
+                Return the final list
+            '''
+            return my_list
+        # end else
+    else:
+        '''
+            If there are curly brces in the input string
+            Split the input string up to the end of the curly braces
+        '''
+        lexer = split(arg[:curly_braces.span()[0]])
+        
+        '''
+            Remove trailing commas and
+            create a list of split items
+        '''
+        my_list = [i.strip(",") for i in lexer]
+        
+        '''
+            Append the contents of the curly braces to the list
+        '''
+        my_list.append(curly_braces.group())
+        
+        '''
+            Return the final list
+        '''
+        return my_list
+    # end else
 
 
 class HBNBCommand(cmd.Cmd):
@@ -18,6 +100,15 @@ class HBNBCommand(cmd.Cmd):
         cmdln - interpreter class
     '''
     prompt = '(hbnb) '
+    __classes = {
+            'BaseModel',
+            'User',
+            'State',
+            'City',
+            'Place',
+            'Amenity',
+            'Review'
+    }
 
     def emptyline(self):
         '''
@@ -42,33 +133,32 @@ class HBNBCommand(cmd.Cmd):
             creates a new instance of class BaseModel,
                 saves it to JSON file and print the id
         '''
-        if len(line) == 0:
+        args = parse(line)
+        if not args or len(args) == 0:
             '''If class is missing '''
             print('** class name missing **')
-        elif line[0] not in classes:
+            return
+        # end if
+        elif args[0] not in self.__classes:
             ''' if it doe not exist '''
             print("** class doesn't exist **")
+            return
+        # end elif
         else:
-            '''
-            try:
-                obj = eval(line)()
-                obj.save()
-                print(obj.id)
-            except Exception:
-                print("** class doesn't exist **")
-            '''
-            print(eval(line[0])().id)
+            print(eval(args[0])().id)
             storage.save()
+            return
+        # end else
 
     def do_show(self, line):
         '''shows an instance'''
-        args = line.split()
+        args = parse(line)
         if not args or len(args) == 0 or args[0] == "":
             '''
                 if class is missing
             '''
             print('** class name missing **')
-        elif args[0] not in classes:
+        elif args[0] not in self.__classes:
             '''
                 if class does not exist
             '''
@@ -92,21 +182,30 @@ class HBNBCommand(cmd.Cmd):
 
                 Deletes the class instance of a given id.
         '''
-        args = line.split()
-        cl_nm = '{}.{}.format(args[0], args[1]'
+        args = parse(line)
+        cl_nm = '{}.{}.format(args[0], args[1])'
+        objects = storage.all()
+
         if len(args) == 0:
             ''' If class is missing '''
             print('** class name missing **')
-        elif cl_nm not in classes:
+            return False
+        # end if
+        # elif cl_nm not in classes:
+        elif args[0] not in self.__classes:
             '''
                 if class does not exist
             '''
             print("** class doesn't exist **")
+            return False
+        # end elif
         elif len(args) == 1:
             '''
                 If the id is missing
             '''
             print('** instance id missing **')
+            return False
+        # end elif
         else:
             key = cl_nm + '.' + args[1]
             objects = storage.all()
@@ -128,10 +227,10 @@ class HBNBCommand(cmd.Cmd):
         Usage:  all | all <class>
             prints all instance
         '''
-        args = line.split()
+        args = parse(line)
         objects = storage.all()
         if len(args) > 0:
-            if args[0] not in classes:
+            if args[0] not in self.__classes:
                 print("** class doesn't exist **")
         else:
             '''
@@ -149,23 +248,28 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         '''
-            updates instance
+            Usage:
+                updates instance
         '''
-        args = line.split()
+        args = parse(line)
         objects = storage.all()
 
-        if len(args) == 0:
+        if len(args) < 2:
             '''
-                checking the lenght of args
+                checking the lenght of args:
+                    At least 2 elements are needed:
+                    - The class name (args[0])
+                    - The instance id (args[1])
             '''
             print('** class name missing **')
             return False
         # end if
 
         class_name = args[0]
-        key = '{}.{}'.format(class_name, args[1])
+        # key = '{}.{}'.format(class_name, args[1])
+        key = args[0] + '.' + args[1]
 
-        if class_name not in classes:
+        if class_name not in self.__classes:
             '''
                 the class does not exist
             '''
