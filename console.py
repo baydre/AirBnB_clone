@@ -414,7 +414,6 @@ class HBNBCommand(cmd.Cmd):
         # Parse the input argument to identify the class name
         args = parse(line)
         if not args:
-            print('** class name missing **')
             return False
 
         # the counter
@@ -430,7 +429,6 @@ class HBNBCommand(cmd.Cmd):
             if args[0] == inst.__class__.__name__:
                 ''' increment count '''
                 counter += 1
-                return counter
             # end if
         # end for
         print(counter)
