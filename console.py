@@ -363,7 +363,8 @@ class HBNBCommand(cmd.Cmd):
                 'all': self.do_all,
                 'show': self.do_show,
                 'destroy': self.do_destroy,
-                'update': self.do_update
+                'update': self.do_update,
+                'count': self.do_count
                 }
         '''
             Check to see if the input argument contains a period
@@ -403,6 +404,37 @@ class HBNBCommand(cmd.Cmd):
         '''
         # print('*** Unknown syntax: {}'.format(line))
         return False
+    def do_count(self, line):
+        '''
+            Usage:
+                This used to retrieve
+                the number of instances of a class:
+                    <class name>.count()
+        '''
+        # Parse the input argument to identify the class name
+        args = parse(line)
+        if not args:
+            print('** class name missing **')
+            return False
+
+        # the counter
+        counter = 0
+        '''
+            We Iterate through all instances stored in the 'storage'
+        '''
+        for inst in storage.all().values():
+            '''
+                we checck if class name of instance
+                matches the provided class name
+            '''
+            if args[0] == inst.__class__.__name__:
+                ''' increment count '''
+                counter += 1
+                return counter
+            # end if
+        # end for
+        print(counter)
+
 
 
 if __name__ == '__main__':
