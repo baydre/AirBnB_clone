@@ -3,10 +3,10 @@
 Module
 '''
 import unittest
-from models.city import City
+from models.amenity import Amenity
 
 
-class TestCity(unittest.TestCase):
+class TestAmenity(unittest.TestCase):
     '''
     Docs
     '''
@@ -16,8 +16,8 @@ class TestCity(unittest.TestCase):
         Docs
         '''
         moduleDoc = (
-                __import__("models.city")
-                .city.__doc__)
+                __import__("models.amenity")
+                .amenity.__doc__)
         self.assertGreater(len(moduleDoc), 0)
 
     def test_classDocs(self):
@@ -25,23 +25,16 @@ class TestCity(unittest.TestCase):
         Docs
         '''
         classDoc = (
-                __import__("models.city")
-                .city.City.__doc__)
+                __import__("models.amenity")
+                .amenity.Amenity.__doc__)
         self.assertGreater(len(classDoc), 0)
 
     def test_name_Type(self):
         '''
         Docs
         '''
-        city = City()
-        self.assertIs(type(city.name), str)
-
-    def test_state_id_Type(self):
-        '''
-        Docs
-        '''
-        city = City()
-        self.assertIs(type(city.state_id), str)
+        amenity = Amenity()
+        self.assertIs(type(amenity.name), str)
 
 
 if __name__ == "__main__":
