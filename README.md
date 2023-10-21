@@ -56,5 +56,5 @@ Here are a few examples of how you can use the console:
 
 ## Contributors
 
-[Lawal Tajudeen Ogunsola](https://github.com/lawalTheWest)
-[Yasir Musa](https://github.com/baydre)
+- [Lawal Tajudeen Ogunsola](https://github.com/lawalTheWest)
+- [Yasir Musa](https://github.com/baydre)
